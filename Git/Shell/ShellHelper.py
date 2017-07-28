@@ -17,9 +17,9 @@ windowsTerminalStartCommand = " start cmd /K \""
 windowsTerminalExitCommand = " exit \""
 windowsOutputRedirectionOperator =" > "
 
-linuxTerminalStartCommand = "gnome-terminal"
+linuxTerminalStartCommand = "xterm -e \""
 linuxTerminalExitCommand = " exit \""
-linuxOutputRedirectionOperator = "  | "
+linuxOutputRedirectionOperator = " > "
 
 commandLogicalAnd = " && "
 
@@ -38,11 +38,15 @@ def executeCommandOnLinux(command, directory):
     outputTempFileName = datetime.datetime.now().strftime("%B_%d_%Y_%H_%M_%S") + randomWord(12) + ".txt"
     tmpFile = os.path.join(os.path.sep, os.getcwd(), outputTempFileName)
     createFile(tmpFile)
+    command = linuxCommandCleaner(command)
     cmd = linuxTerminalStartCommand + command + linuxOutputRedirectionOperator + tmpFile + commandLogicalAnd + linuxTerminalExitCommand
     call(cmd, shell=True, cwd=directory)
     file = readFile(tmpFile)
     deleteFile(tmpFile)
     return file
+
+def linuxCommandCleaner(comamnd):
+    return comamnd.replace("\"","'")
 
 def executeCommandOnShell(command, directory):
     if re.search("windows", platform.system(), re.IGNORECASE):
