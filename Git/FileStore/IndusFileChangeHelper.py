@@ -26,6 +26,8 @@ def isLineIsChangedByIndus(line, fileName, contextOfLine):
                  re.IGNORECASE):
         filesCrossedIndusSection.remove(fileName)
         return True
+    if re.search("Indus change", line, re.IGNORECASE):
+        return True
     if fileName in filesCrossedIndusSection:
         return True
     return checkLineInContext(line,contextOfLine)

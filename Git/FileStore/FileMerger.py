@@ -4,7 +4,7 @@ import os
 import re
 from shutil import copyfile
 
-magicNumberForContext = 3
+magicNumberForContext = 50
 
 from Git.FileStore.IndusFileChangeHelper import isLineIsChangedByIndus, isLineIsRemovedByIndus
 
@@ -75,14 +75,14 @@ def writeLine(line, textobj, baseFilePath, contextOfLine):
             line = line[2:]
             textobj.write(line)
         else:
-            line = "  ?Indus  " + line[2:]
+            line = "  ?oldApex  " + line[2:]
             textobj.write(line)
     elif (line.startswith("- ")):
         if isLineIsRemovedByIndus(line,baseFilePath, contextOfLine):
             line = line[2:]
-            textobj.write(line)
+            #textobj.write(line)
         else:
-            line = " ?IDH  " + line[2:]
+            line = " ?newBase  " + line[2:]
             textobj.write(line)
     elif line.startswith("  "):
         line = line[2:]

@@ -21,7 +21,7 @@ def createFile(filePath):
 
 
 def readFile(filePath):
-    time.sleep(5)
+    time.sleep(15)
     try:
         with open(filePath, encoding="utf-8") as file:
             content = file.readlines()
