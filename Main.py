@@ -1,4 +1,5 @@
 import filecmp
+import timeit
 from logging import warning
 
 import os, sys
@@ -230,4 +231,8 @@ def checkConstraintBetweenBaseAndApex(oldBaseWorkSpacePath, oldApexWorkSpacePath
 
 
 if __name__ == '__main__':
+    start = timeit.default_timer()
+    print("start time :" + str(start))
     main()
+    stop = timeit.default_timer()
+    print("total time taken : " + str(stop-start))

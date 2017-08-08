@@ -75,14 +75,14 @@ def writeLine(line, textobj, baseFilePath, contextOfLine):
             line = line[2:]
             textobj.write(line)
         else:
-            line = "  ?oldApex  " + line[2:]
+            line = "  script?oldApex  " + line[2:]
             textobj.write(line)
     elif (line.startswith("- ")):
         if isLineIsRemovedByIndus(line,baseFilePath, contextOfLine):
             line = line[2:]
             #textobj.write(line)
         else:
-            line = " ?newBase  " + line[2:]
+            line = " script?newBase  " + line[2:]
             textobj.write(line)
     elif line.startswith("  "):
         line = line[2:]
