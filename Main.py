@@ -9,6 +9,8 @@ import shutil
 
 import re
 
+from multiprocessing import Process
+
 from Git.FileStore.FileMerger import copyFile
 from Git.FileStore.FileStoreHelper import mergeFiles
 from Git.GitHelper import pullLatestChangesFromRemoteRepo, checkValidityOfBranch, cloneRepo, checkoutBranch, gitAddAll, \
@@ -79,9 +81,18 @@ def makeAllReposAvailable(reposParentDirectory, repoListWithUrl):
 def checkBranchExistanceInEachRepo(reposParentDirectory, repoListWithUrl, oldBaseBranch, oldApexBranch, newApexBranch):
     for repoWithUrl in repoListWithUrl:
         repoPath = os.path.join(os.path.sep, reposParentDirectory, getRepoNameFromRepoWithUrl(repoWithUrl))
-        checkValidityOfBranch(remoteOriginBranchPrefix + oldBaseBranch, repoPath)
-        checkValidityOfBranch(remoteOriginBranchPrefix + oldApexBranch, repoPath)
-        checkValidityOfBranch(remoteOriginBranchPrefix + newApexBranch, repoPath)
+        #checkValidityOfBranch(remoteOriginBranchPrefix + oldBaseBranch, repoPath)
+        #checkValidityOfBranch(remoteOriginBranchPrefix + oldApexBranch, repoPath)
+        #checkValidityOfBranch(remoteOriginBranchPrefix + newApexBranch, repoPath)
+        pOBase = Process(target=checkValidityOfBranch,args=(remoteOriginBranchPrefix + oldBaseBranch, repoPath,))
+        pOApex = Process(target=checkValidityOfBranch,args=(remoteOriginBranchPrefix + oldApexBranch, repoPath,))
+        pNApex = Process(target=checkValidityOfBranch,args=(remoteOriginBranchPrefix + newApexBranch, repoPath,))
+        pOBase.start()
+        pOApex.start()
+        pNApex.start()
+        pNApex.join()
+        pOApex.join()
+        pOBase.join()
 
 
 def getRepoNameFromRepoWithUrl(repoWithUrl):
@@ -95,8 +106,8 @@ def getRepoURLFromRepoWithUrl(repoWithUrl):
 def pullLatestChangesFromRemote(reposParentDirectory, repoListWithUrl):
     for repoWithUrl in repoListWithUrl:
         repoPath = os.path.join(os.path.sep, reposParentDirectory, getRepoNameFromRepoWithUrl(repoWithUrl))
-        pullLatestChangesFromRemoteRepo(repoPath, getRepoURLFromRepoWithUrl(repoWithUrl))
-
+        repoUrl = getRepoURLFromRepoWithUrl(repoWithUrl)
+        pullLatestChangesFromRemoteRepo(repoPath, repoUrl )
 
 def main():
     if len(sys.argv) > 5:
@@ -128,20 +139,41 @@ def main():
     # 1. Workspace containing all repos base branches
     parentReferenceDirectoryPathForBaseBranch = os.path.join(os.path.sep, os.getcwd(), "..",
                                                              parentReferenceDirectoryNameForBaseBranchName)
-    shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForBaseBranch)  # copy
-    checkoutWorksspaceBranch(parentReferenceDirectoryPathForBaseBranch, oldBaseBranch, repoListWithUrl)
+    #shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForBaseBranch)  # copy
+    #checkoutWorksspaceBranch(parentReferenceDirectoryPathForBaseBranch, oldBaseBranch, repoListWithUrl)
 
     # 2. Workspace containing all repos apex branches
     parentReferenceDirectoryPathForApexBranch = os.path.join(os.path.sep, os.getcwd(), "..",
                                                              parentReferenceDirectoryNameForApexBranchName)
-    shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForApexBranch)  # copy
-    checkoutWorksspaceBranch(parentReferenceDirectoryPathForApexBranch, oldApexBranch, repoListWithUrl)
+    #shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForApexBranch)  # copy
+    #checkoutWorksspaceBranch(parentReferenceDirectoryPathForApexBranch, oldApexBranch, repoListWithUrl)
 
     # 3. Workspace containing all repos new apex branches
     parentReferenceDirectoryPathForNEWApexBranch = os.path.join(os.path.sep, os.getcwd(), "..",
                                                                 parentReferenceDirectoryNameForNEWApexBranchName)
-    shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForNEWApexBranch)  # copy
-    checkoutWorksspaceBranch(parentReferenceDirectoryPathForNEWApexBranch, newApexBranch, repoListWithUrl)
+    #shutil.copytree(reposParentDirectory, parentReferenceDirectoryPathForNEWApexBranch)  # copy
+    #checkoutWorksspaceBranch(parentReferenceDirectoryPathForNEWApexBranch, newApexBranch, repoListWithUrl)
+
+    pOBase = Process(target=shutil.copytree, args=(reposParentDirectory,parentReferenceDirectoryPathForBaseBranch,))
+    pOApex = Process(target=shutil.copytree, args=(reposParentDirectory, parentReferenceDirectoryPathForApexBranch,))
+    pNApex = Process(target=shutil.copytree, args=(reposParentDirectory, parentReferenceDirectoryPathForNEWApexBranch,))
+    pOBase.start()
+    pOApex.start()
+    pNApex.start()
+    pNApex.join()
+    pOApex.join()
+    pOBase.join()
+
+    # checkout branch
+    pOBase = Process(target=checkoutWorksspaceBranch, args=(parentReferenceDirectoryPathForBaseBranch, oldBaseBranch,repoListWithUrl,))
+    pOApex = Process(target=checkoutWorksspaceBranch, args=(parentReferenceDirectoryPathForApexBranch, oldApexBranch,repoListWithUrl,))
+    pNApex = Process(target=checkoutWorksspaceBranch, args=(parentReferenceDirectoryPathForNEWApexBranch, newApexBranch,repoListWithUrl,))
+    pOBase.start()
+    pOApex.start()
+    pNApex.start()
+    pNApex.join()
+    pOApex.join()
+    pOBase.join()
 
 
 

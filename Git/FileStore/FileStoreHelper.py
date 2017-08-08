@@ -7,7 +7,7 @@ from Git.FileStore.FileMerger import mergeFile, recursivelyCreateAFilePath, merg
 
 
 def deleteFile(filePath):
-    time.sleep(5)
+    #time.sleep(5)
     try:
         os.remove(filePath)
     except PermissionError:
@@ -20,12 +20,21 @@ def createFile(filePath):
     f.close()
 
 
-def readFile(filePath):
-    time.sleep(15)
+def readFile(filePath, outputRequired):
+    #time.sleep(15)
+    lines = []
+    condition = True
     try:
-        with open(filePath, encoding="utf-8") as file:
-            content = file.readlines()
-            return [line.strip() for line in content]
+        while condition:
+            with open(filePath, encoding="utf-8") as file:
+                content = file.readlines()
+                lines = [line.strip() for line in content]
+            if len(lines)!= 0 or outputRequired == False:
+                condition = False
+            else:
+                time.sleep(2)
+        deleteFile(filePath)
+        return lines
     except PermissionError:
         return readFile(filePath)
 

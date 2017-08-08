@@ -23,33 +23,34 @@ linuxOutputRedirectionOperator = " > "
 
 commandLogicalAnd = " && "
 
-def executeCommandOnWindows(command, directory):
+def executeCommandOnWindows(command, directory, outputRequired):
     outputTempFileName = datetime.datetime.now().strftime("%B_%d_%Y_%H_%M_%S") + randomWord(12) + ".txt"
     tmpFile = os.path.join(os.path.sep, os.getcwd(), outputTempFileName)
     createFile(tmpFile)
     cmd = windowsTerminalStartCommand + command + windowsOutputRedirectionOperator + tmpFile + commandLogicalAnd + windowsTerminalExitCommand
     call(cmd, shell=True, cwd=directory)
-    file = readFile(tmpFile)
-    deleteFile(tmpFile)
+    file = readFile(tmpFile, outputRequired)
+    #deleteFile(tmpFile)
     return file
 
 
-def executeCommandOnLinux(command, directory):
+def executeCommandOnLinux(command, directory, outputRequired):
     outputTempFileName = datetime.datetime.now().strftime("%B_%d_%Y_%H_%M_%S") + randomWord(12) + ".txt"
     tmpFile = os.path.join(os.path.sep, os.getcwd(), outputTempFileName)
     createFile(tmpFile)
     command = linuxCommandCleaner(command)
     cmd = linuxTerminalStartCommand + command + linuxOutputRedirectionOperator + tmpFile + commandLogicalAnd + linuxTerminalExitCommand
     call(cmd, shell=True, cwd=directory)
-    file = readFile(tmpFile)
-    deleteFile(tmpFile)
+    file = readFile(tmpFile, outputRequired)
+    #deleteFile(tmpFile)
     return file
 
 def linuxCommandCleaner(comamnd):
     return comamnd.replace("\"","'")
 
-def executeCommandOnShell(command, directory):
+def executeCommandOnShell(command, directory, outputRequired):
+    time.sleep(2)
     if re.search("windows", platform.system(), re.IGNORECASE):
-        return executeCommandOnWindows(command, directory)
+        return executeCommandOnWindows(command, directory, outputRequired)
     elif re.search("linux", platform.system(), re.IGNORECASE):
-        return executeCommandOnLinux(command, directory)
+        return executeCommandOnLinux(command, directory, outputRequired)
