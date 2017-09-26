@@ -1,4 +1,8 @@
-C:\Users\sunil\Desktop\Repos\ParentRepo Contacts#https://github.com/indusos/Contacts.git,ContactsCommon#https://github.com/indusos/ContactsCommon.git,Dialer#https://github.com/indusos/Dialer.git,InCallUI#https://github.com/indusos/InCallUI.git,PhoneCommon#https://github.com/indusos/PhoneCommon.git MTK7/Karbonn_UTL_Indian1/Base MTK7/Karbonn_UTL_Indian/Apex/Refactor MTK7/Karbonn_UTL_TitaniumJumbo2/Apex
+C:\Users\sunil\Desktop\Repos\ParentRepo Contacts#https://github.com/indusos/Contacts.git,ContactsCommon#https://github.com/indusos/ContactsCommon.git,Dialer#https://github.com/indusos/Dialer.git,InCallUI#https://github.com/indusos/InCallUI.git,PhoneCommon#https://github.com/indusos/PhoneCommon.git SPRD7/Karbonn_Alpha_A91_champ/Base SPRD7/Karbonn_Alpha_A91_champ/ApexRefactor SPRD7/Karbonn_Alpha_A91_champ/Base
 
 
 C:\Users\sunil\Desktop\Repos\ParentRepo Telecom#https://github.com/indusos/Telecom.git,Telephony#https://github.com/indusos/Telephony.git MTK7/Karbonn_UTL_TitaniumJumbo2/Base MTK7/Karbonn_UTL_TitaniumJumbo2/Apex MTK7/Karbonn_UTL_TitaniumJumbo2/Base
+
+
+For Contacts:
+C:\Users\sunil\Desktop\Repos\ParentRepo Contacts#https://github.com/indusos/Contacts.git SPRD7/Karbonn_Alpha_A91_champ/Base SPRD7/Karbonn_Alpha_A91_champ/ApexRefactor SPRD7/Karbonn_Alpha_A91_champ/Base

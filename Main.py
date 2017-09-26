@@ -206,7 +206,7 @@ def getFullPathNames(fullPath,fileNameList):
 def filterIndusChagedFiles(fileList):
     filteredList = []
     for item in fileList:
-        if re.search(".png", item, re.IGNORECASE) or  re.search("strings.xml", item, re.IGNORECASE) or  re.search("SpecialCharSequenceMgr.java", item, re.IGNORECASE):
+        if re.search(".png", item, re.IGNORECASE) or  re.search("strings.xml", item, re.IGNORECASE) or  re.search("strings_ex.xml", item, re.IGNORECASE) or  re.search("SpecialCharSequenceMgr.java", item, re.IGNORECASE):
             verbose(item)
         else:
             filteredList.append(item)
